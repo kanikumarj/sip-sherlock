@@ -122,7 +122,7 @@ export default function LadderDiagram({ data }: LadderDiagramProps) {
   const [copied, setCopied] = useState(false);
   const [hoverIdx, setHoverIdx] = useState(-1);
   const viewRef = useRef<HTMLDivElement>(null);
-  const playTimer = useRef<ReturnType<typeof setTimeout>>();
+  const playTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => { localStorage.setItem('ladder-theme', theme); }, [theme]);
 
