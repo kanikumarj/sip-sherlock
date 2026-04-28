@@ -548,9 +548,20 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="SIP Sherlock", description="AI-powered SIP log analysis", version="1.1.0", lifespan=lifespan)
 
+_CORS_ORIGINS = [
+    CORS_ORIGIN,
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:3000",
+    # Vercel production & preview deployments
+    "https://sip-sherlock.vercel.app",
+    "https://sip-sherlock-kanikumarj.vercel.app",
+]
+# Allow any *.vercel.app preview URL via regex
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[CORS_ORIGIN, "http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+    allow_origins=_CORS_ORIGINS,
+    allow_origin_regex=r"https://sip-sherlock.*\.vercel\.app",
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
 )
 
