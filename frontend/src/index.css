@@ -1,0 +1,693 @@
+@import "tailwindcss";
+
+/* ─── SIP Sherlock Design System ─────────────────────────────── */
+
+@theme {
+  --color-bg-primary: #0D1117;
+  --color-bg-card: #161B22;
+  --color-bg-elevated: #1C2128;
+  --color-border: #30363D;
+  --color-border-light: #3D444D;
+  --color-text-primary: #E6EDF3;
+  --color-text-muted: #8B949E;
+  --color-text-dim: #656D76;
+  --color-green: #3FB950;
+  --color-green-dim: #238636;
+  --color-yellow: #D29922;
+  --color-yellow-dim: #9E6A03;
+  --color-red: #F85149;
+  --color-red-dim: #DA3633;
+  --color-purple: #BC8CFF;
+  --color-purple-dim: #8957E5;
+  --color-blue: #58A6FF;
+  --color-blue-dim: #1F6FEB;
+  --color-cyan: #39D2C0;
+}
+
+/* ─── Global Base Styles ─────────────────────────────────────── */
+
+body {
+  background-color: #0D1117;
+  color: #E6EDF3;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #30363D;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3D444D;
+}
+
+/* ─── Animations ─────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100%); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(88, 166, 255, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(88, 166, 255, 0.4); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NEURAL SIGNAL ARCHITECTURE — Ladder Diagram v3.0
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Ambient Background ─────────────────────────────────────── */
+
+@keyframes ambient1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.1); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+}
+@keyframes ambient2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 25px) scale(1.08); }
+}
+@keyframes ambient3 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -30px); }
+}
+
+.nsa-ambient {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+.nsa-ambient::before,
+.nsa-ambient::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+.nsa-ambient::before {
+  width: 500px; height: 500px;
+  top: -100px; left: -100px;
+  background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+  animation: ambient1 25s ease-in-out infinite;
+}
+.nsa-ambient::after {
+  width: 400px; height: 400px;
+  bottom: -50px; right: -50px;
+  background: radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%);
+  animation: ambient2 30s ease-in-out infinite;
+}
+
+/* ─── Dot Grid ───────────────────────────────────────────────── */
+
+.nsa-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(99,102,241,0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Scanline on Timeline Spine ─────────────────────────────── */
+
+@keyframes spine-scan {
+  0% { top: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.nsa-spine {
+  position: absolute;
+  width: 1px;
+  top: 0; bottom: 0;
+  z-index: 1;
+}
+.nsa-spine::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  width: 7px;
+  height: 40px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, transparent, var(--spine-color, rgba(99,102,241,0.4)), transparent);
+  animation: spine-scan 6s linear infinite;
+}
+
+/* ─── Device Card (Holographic) ──────────────────────────────── */
+
+.nsa-device-card {
+  position: relative;
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-align: center;
+  background: rgba(10, 15, 30, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.nsa-device-card:hover {
+  transform: scale(1.03);
+}
+.nsa-device-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--device-color, #6366f1) 0%, transparent 50%, var(--device-color, #6366f1) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.nsa-device-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+
+/* ─── Health Pulse Dot ───────────────────────────────────────── */
+
+@keyframes health-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.8); opacity: 0.4; }
+}
+.nsa-health-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--device-color, #3FB950);
+  position: relative;
+}
+.nsa-health-dot::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: var(--device-color, #3FB950);
+  animation: health-pulse 2.5s ease-in-out infinite;
+  opacity: 0.4;
+}
+
+/* ─── Signal Arrow ───────────────────────────────────────────── */
+
+.nsa-arrow-group {
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+.nsa-arrow-group:hover {
+  filter: brightness(1.4) drop-shadow(0 0 6px var(--arrow-color, #58A6FF));
+}
+.nsa-arrow-group:hover .nsa-label-pill {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* ─── Particle Travel ────────────────────────────────────────── */
+
+@keyframes particle-fly {
+  0% { offset-distance: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  85% { opacity: 0.9; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.nsa-particle {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--particle-color, #58A6FF);
+  box-shadow: 0 0 12px 4px var(--particle-color, #58A6FF),
+              0 0 24px 8px color-mix(in srgb, var(--particle-color, #58A6FF) 30%, transparent);
+  position: absolute;
+  pointer-events: none;
+  offset-path: var(--particle-path);
+  animation: particle-fly var(--particle-duration, 600ms) ease-out forwards;
+  animation-delay: var(--particle-delay, 0ms);
+  z-index: 5;
+}
+
+/* ─── Error Arrow Pulse ──────────────────────────────────────── */
+
+@keyframes error-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.nsa-error-arrow line {
+  animation: error-pulse 2s ease-in-out infinite;
+}
+
+/* ─── Frosted Glass Label ────────────────────────────────────── */
+
+.nsa-label-pill {
+  position: absolute;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(10, 15, 30, 0.82);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 4;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* ─── SDP Chip ───────────────────────────────────────────────── */
+
+.nsa-sdp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(188, 140, 255, 0.15);
+  border: 1px solid rgba(188, 140, 255, 0.25);
+  font-size: 9px;
+  color: #BC8CFF;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+/* ─── Failure Marker ─────────────────────────────────────────── */
+
+@keyframes failure-scan {
+  0% { left: -20%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+@keyframes failure-flash {
+  0%, 60%, 100% { opacity: 0.8; }
+  30% { opacity: 1; }
+}
+
+.nsa-failure-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #F85149 20%, #F85149 80%, transparent);
+  z-index: 6;
+  animation: failure-flash 3s ease-in-out infinite;
+}
+.nsa-failure-line::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 60px;
+  height: 18px;
+  background: linear-gradient(90deg, transparent, rgba(248,81,73,0.4), transparent);
+  border-radius: 2px;
+  animation: failure-scan 4s linear infinite;
+}
+
+.nsa-failure-badge {
+  position: absolute;
+  right: 12px;
+  top: -12px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  background: rgba(248, 81, 73, 0.2);
+  border: 1px solid rgba(248, 81, 73, 0.4);
+  color: #F85149;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── Playback Controller ────────────────────────────────────── */
+
+.nsa-playback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(10, 15, 30, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0 0 12px 12px;
+}
+
+.nsa-playback-btn {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: #8B949E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.nsa-playback-btn:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #E6EDF3;
+}
+.nsa-playback-btn.active {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+  color: #a5b4fc;
+}
+
+.nsa-scrubber {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+  cursor: pointer;
+}
+.nsa-scrubber-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  transition: width 0.1s linear;
+}
+.nsa-scrubber-thumb {
+  position: absolute;
+  top: -5px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #E6EDF3;
+  border: 2px solid #6366f1;
+  box-shadow: 0 0 10px rgba(99,102,241,0.5);
+  transform: translateX(-50%);
+  cursor: grab;
+  transition: transform 0.1s ease;
+}
+.nsa-scrubber-thumb:hover {
+  transform: translateX(-50%) scale(1.2);
+}
+
+.nsa-speed-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: #8B949E;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.nsa-speed-badge:hover {
+  color: #a5b4fc;
+  border-color: rgba(99,102,241,0.3);
+}
+
+/* ─── Message Drawer (Enhanced) ──────────────────────────────── */
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+}
+
+.drawer-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(520px, 90vw);
+  background: #0a0f1e;
+  border-left: 1px solid rgba(99,102,241,0.15);
+  z-index: 51;
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.drawer-panel.closed {
+  transform: translateX(100%);
+}
+
+/* ─── SIP Syntax Highlighting ────────────────────────────────── */
+
+.sip-raw-message {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: #E6EDF3;
+  background: #030712;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  counter-reset: sip-line;
+}
+
+.sip-line { display: block; }
+.sip-line::before {
+  counter-increment: sip-line;
+  content: counter(sip-line);
+  display: inline-block;
+  width: 28px;
+  margin-right: 12px;
+  text-align: right;
+  color: #30363D;
+  font-size: 10px;
+  user-select: none;
+}
+
+.sip-method { color: #E6EDF3; font-weight: 700; font-size: 13px; }
+.sip-status-2xx { color: #3FB950; font-weight: 700; }
+.sip-status-1xx { color: #8B949E; }
+.sip-status-4xx { color: #F85149; font-weight: 700; }
+.sip-status-5xx { color: #DA3633; font-weight: 700; }
+.sip-header-routing { color: #38bdf8; }
+.sip-header-identity { color: #34d399; }
+.sip-header-session { color: #a78bfa; }
+.sip-header-content { color: #fbbf24; }
+.sip-header-value { color: #94a3b8; }
+.sip-sdp-line { color: #c084fc; }
+.sip-sdp-key { color: #e879f9; font-weight: 600; }
+
+/* ─── Controls Bar ───────────────────────────────────────────── */
+
+.nsa-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(10, 15, 30, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px 12px 0 0;
+}
+
+.nsa-ctrl-btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #8B949E;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.nsa-ctrl-btn:hover {
+  color: #E6EDF3;
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+}
+.nsa-ctrl-btn.active {
+  color: #a5b4fc;
+  background: rgba(99,102,241,0.15);
+  border-color: rgba(99,102,241,0.3);
+}
+
+/* ─── Matrix Theme ───────────────────────────────────────────── */
+
+.theme-matrix .nsa-device-card {
+  background: rgba(0,0,0,0.9);
+  border-color: rgba(0,255,65,0.15);
+}
+.theme-matrix .nsa-device-card::before {
+  background: linear-gradient(135deg, #00ff41 0%, transparent 50%, #00ff41 100%);
+}
+.theme-matrix .nsa-label-pill {
+  background: rgba(0,0,0,0.9);
+  border-color: rgba(0,255,65,0.2);
+  color: #00ff41;
+}
+.theme-matrix .nsa-grid {
+  background-image: radial-gradient(circle, rgba(0,255,65,0.06) 1px, transparent 1px);
+}
+.theme-matrix .nsa-playback,
+.theme-matrix .nsa-controls {
+  background: rgba(0,0,0,0.95);
+  border-color: rgba(0,255,65,0.1);
+}
+.theme-matrix * {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+}
+
+/* ─── Blueprint Theme ────────────────────────────────────────── */
+
+.theme-blueprint .nsa-device-card {
+  background: rgba(10, 22, 40, 0.9);
+  border-color: rgba(103,232,249,0.2);
+  border-radius: 2px;
+}
+.theme-blueprint .nsa-device-card::before {
+  background: linear-gradient(135deg, #67e8f9 0%, transparent 50%, #67e8f9 100%);
+  border-radius: 2px;
+}
+.theme-blueprint .nsa-label-pill {
+  background: rgba(10, 22, 40, 0.9);
+  border-color: rgba(103,232,249,0.2);
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 10px;
+}
+.theme-blueprint .nsa-grid {
+  background-image:
+    linear-gradient(rgba(103,232,249,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103,232,249,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.theme-blueprint .nsa-playback,
+.theme-blueprint .nsa-controls {
+  background: rgba(10, 22, 40, 0.95);
+  border-color: rgba(103,232,249,0.1);
+}
+
+/* ─── Confidence Bar ─────────────────────────────────────────── */
+
+.confidence-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: #21262D;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+/* ─── Loading Animation ──────────────────────────────────────── */
+
+.sherlock-loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.sherlock-loader .ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin-slow 2s linear infinite;
+}
+
+.sherlock-loader .ring:nth-child(1) {
+  border-top-color: #58A6FF;
+  animation-duration: 2s;
+}
+
+.sherlock-loader .ring:nth-child(2) {
+  inset: 8px;
+  border-right-color: #BC8CFF;
+  animation-duration: 3s;
+  animation-direction: reverse;
+}
+
+.sherlock-loader .ring:nth-child(3) {
+  inset: 16px;
+  border-bottom-color: #3FB950;
+  animation-duration: 4s;
+}
+
+.sherlock-loader .icon {
+  position: absolute;
+  inset: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .nsa-particle,
+  .nsa-spine::after,
+  .nsa-failure-line::after,
+  .nsa-health-dot::after,
+  .nsa-ambient::before,
+  .nsa-ambient::after {
+    animation: none !important;
+  }
+}
